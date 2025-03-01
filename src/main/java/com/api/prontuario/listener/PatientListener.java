@@ -4,6 +4,7 @@ import com.api.prontuario.dtos.PatientDTO;
 import com.api.prontuario.services.PatientImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +15,10 @@ public class PatientListener {
         this.patientS = patientS;
     }
 
-    @KafkaListener(topics = "Hospital", groupId = "prontuario-group")
+    @KafkaListener(
+            topicPartitions = @TopicPartition(topic = "Hospital", partitions = {"0"}),
+            groupId = "prontuario-group"
+    )
     public void consumePatient(String message) {
         System.out.println("Mensagem recebida: " + message);
 
