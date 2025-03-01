@@ -1,17 +1,18 @@
 package com.api.prontuario.config;
-
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
+import com.api.prontuario.dtos.PatientDTO;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.support.converter.JsonMessageConverter;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class KafkaConfigAdmin {
@@ -23,19 +24,23 @@ public class KafkaConfigAdmin {
     }
 
     @Bean
-    public ConsumerFactory<String, Object> consumerFactory(){
-        var configs = new HashMap<String, Object>();
+    public ConsumerFactory<String, PatientDTO> consumerFactory() {
+        Map<String, Object> configs = new HashMap<>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
         configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        return  new DefaultKafkaConsumerFactory<>(configs);
-    }
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory jsonContainerFactory(ConsumerFactory<String, Object> consumerFactory) {
-        var factory = new ConcurrentKafkaListenerContainerFactory<String, Object>();
-        factory.setConsumerFactory(consumerFactory);
-        factory.setRecordMessageConverter(new JsonMessageConverter());
-        return  factory;
+        configs.put(JsonDeserializer.TRUSTED_PACKAGES, "com.api.prontuario.dtos");
+        JsonDeserializer<PatientDTO> jsonDeserializer = new JsonDeserializer<>(PatientDTO.class);
+        return new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(), jsonDeserializer);
     }
 
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, PatientDTO> jsonContainerFactory(
+            ConsumerFactory<String, PatientDTO> consumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, PatientDTO> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory);
+        return factory;
+    }
 }
