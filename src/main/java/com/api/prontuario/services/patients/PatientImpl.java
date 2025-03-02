@@ -1,4 +1,4 @@
-package com.api.prontuario.services;
+package com.api.prontuario.services.patients;
 
 import com.api.prontuario.dtos.PatientDTO;
 import com.api.prontuario.entities.Patient;

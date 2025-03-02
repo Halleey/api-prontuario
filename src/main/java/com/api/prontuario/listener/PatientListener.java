@@ -1,7 +1,7 @@
 package com.api.prontuario.listener;
 
 import com.api.prontuario.dtos.PatientDTO;
-import com.api.prontuario.services.PatientImpl;
+import com.api.prontuario.services.patients.PatientImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.TopicPartition;
