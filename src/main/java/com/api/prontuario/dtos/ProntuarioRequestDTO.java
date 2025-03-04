@@ -1,14 +1,8 @@
-package com.api.prontuario.entities;
-import jakarta.persistence.*;
+package com.api.prontuario.dtos;
+
 import java.time.LocalDateTime;
-import java.util.UUID;
-@Entity
-public class Prontuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
-
+public class ProntuarioRequestDTO {
     private String doctorCrm;
     private String patientCpf;
 
@@ -17,7 +11,7 @@ public class Prontuario {
     private String treatment;
     private String observations;
 
-    public String getDoctorCrm() {
+    public String doctorCrm() {
         return doctorCrm;
     }
 
@@ -25,7 +19,7 @@ public class Prontuario {
         this.doctorCrm = doctorCrm;
     }
 
-    public String getPatientCpf() {
+    public String patientCpf() {
         return patientCpf;
     }
 
@@ -33,7 +27,7 @@ public class Prontuario {
         this.patientCpf = patientCpf;
     }
 
-    public LocalDateTime getConsultationDate() {
+    public LocalDateTime consultationDate() {
         return consultationDate;
     }
 
@@ -41,7 +35,7 @@ public class Prontuario {
         this.consultationDate = consultationDate;
     }
 
-    public String getDiagnosis() {
+    public String diagnosis() {
         return diagnosis;
     }
 
@@ -49,7 +43,7 @@ public class Prontuario {
         this.diagnosis = diagnosis;
     }
 
-    public String getTreatment() {
+    public String treatment() {
         return treatment;
     }
 
@@ -57,7 +51,7 @@ public class Prontuario {
         this.treatment = treatment;
     }
 
-    public String getObservations() {
+    public String observations() {
         return observations;
     }
 

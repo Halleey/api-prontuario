@@ -42,10 +42,10 @@ public class JwtUtil {
         return false;
     }
 
-    private Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         return Jwts.parser()
-                .setSigningKey(key) // ⚠️ Use o mesmo método da geração!
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
