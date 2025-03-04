@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class ApiTest {
 
-    @GetMapping
+    @GetMapping("/teste")
     public ResponseEntity<String> ping() {
         return ResponseEntity.ok().body("Ping está funcionando");
 
+    }
+
+    @GetMapping("/block")
+    public ResponseEntity<String> blocked(){
+        return ResponseEntity.ok().body("token is valid");
     }
 
 }

@@ -1,10 +1,12 @@
 package com.api.prontuario.config.jwt;
 
+import com.api.prontuario.config.web.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtFilter.class);
 
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
@@ -29,45 +33,42 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getRequestURI();
-        System.out.println("Recebendo requisição: " + path);
-
-        if (path.startsWith("/api")) {
-            System.out.println("Liberando requisição para " + path);
-            filterChain.doFilter(request, response);
-            return;
-        }
+        log.info("📩 Recebendo requisição em: {}", request.getRequestURI());
 
         String token = extractToken(request);
-        System.out.println("Token extraído: " + token);
+        log.info("📥 Token extraído: {}", token);
 
-        if (token != null && jwtUtil.validateToken(token)) {
-            String username = jwtUtil.extractUsername(token);
-            System.out.println("Usuário extraído do token: " + username);
+        if (token != null) {
+            if (jwtUtil.validateToken(token)) {
+                String username = jwtUtil.extractUsername(token);
+                String role = jwtUtil.extractRole(token);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                log.info("✅ Token válido para usuário: {} | Role: {}", username, role);
 
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println("Usuário autenticado: " + SecurityContextHolder.getContext().getAuthentication());
+                UserDetails userDetails = new UserDetailsImpl(username, role);
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                log.warn("🚫 Token inválido!");
+            }
         } else {
-            System.out.println("Token inválido ou inexistente");
+            log.warn("🚫 Nenhum token encontrado na requisição!");
         }
 
         filterChain.doFilter(request, response);
     }
 
-
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
+        log.info("🔍 Extraindo token do header: {}", header);
 
         if (header != null && header.startsWith("Bearer ")) {
-            return header.substring(7);
+            return header.substring(7).trim();
         }
 
         return null;
     }
 }
-

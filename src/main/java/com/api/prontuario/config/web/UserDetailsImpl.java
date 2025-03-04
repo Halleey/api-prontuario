@@ -1,26 +1,30 @@
 package com.api.prontuario.config.web;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 public class UserDetailsImpl implements UserDetails {
-    private final String username;
 
-    public UserDetailsImpl(String username) {
+    private String username;
+    private String role;
+
+    public UserDetailsImpl(String username, String role) {
         this.username = username;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();  // Sem roles por enquanto
+        return Collections.singleton(new SimpleGrantedAuthority(role));
     }
 
     @Override
     public String getPassword() {
-        return null;  // Não usamos senha porque o JWT já foi validado
+        return "";
     }
 
     @Override
