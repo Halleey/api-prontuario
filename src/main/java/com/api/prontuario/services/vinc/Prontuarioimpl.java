@@ -7,11 +7,11 @@ import com.api.prontuario.repositories.ProntuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class Prontuarioimpl implements  ProntuarioService {
-
-
     private final ProntuarioRepository prontuarioRepository;
     private final JwtUtil jwtUtil;
 
@@ -34,4 +34,11 @@ public class Prontuarioimpl implements  ProntuarioService {
         prontuarioRepository.save(prontuario);
 
     }
+
+    @Override
+    public List<Prontuario> getProntuario(String patientCpf) {
+       return prontuarioRepository.findByPatientCpf(patientCpf);
+    }
+
+
 }
