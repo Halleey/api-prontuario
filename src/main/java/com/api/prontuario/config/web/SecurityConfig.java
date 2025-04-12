@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/api/prontuarios").hasAuthority("ROLE_DOCTOR")
                                 .requestMatchers(HttpMethod.GET, "/api/prontuarios").permitAll()
+                                .requestMatchers("/api/teste").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
