@@ -1,6 +1,7 @@
 package com.api.prontuario.dtos;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ProntuarioRequestDTO {
     private String doctorCrm;
@@ -10,6 +11,15 @@ public class ProntuarioRequestDTO {
     private String diagnosis;
     private String treatment;
     private String observations;
+    List<PrescriptionRequestDTO> requestDTOS;
+
+    public List<PrescriptionRequestDTO> getRequestDTOS() {
+        return requestDTOS;
+    }
+
+    public void setRequestDTOS(List<PrescriptionRequestDTO> requestDTOS) {
+        this.requestDTOS = requestDTOS;
+    }
 
     public String doctorCrm() {
         return doctorCrm;

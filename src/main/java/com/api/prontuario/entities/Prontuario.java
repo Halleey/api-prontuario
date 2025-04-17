@@ -1,7 +1,10 @@
 package com.api.prontuario.entities;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
 @Entity
 public class Prontuario {
 
@@ -16,6 +19,12 @@ public class Prontuario {
     private String diagnosis;
     private String treatment;
     private String observations;
+    @OneToMany(mappedBy = "prontuario", cascade = CascadeType.ALL)
+    private List<Prescription> prescriptions = new ArrayList<>();
+
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
 
     public String getDoctorCrm() {
         return doctorCrm;
@@ -64,4 +73,5 @@ public class Prontuario {
     public void setObservations(String observations) {
         this.observations = observations;
     }
+
 }
