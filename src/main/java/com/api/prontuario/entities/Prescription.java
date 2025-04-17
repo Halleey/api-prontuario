@@ -1,4 +1,5 @@
 package com.api.prontuario.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ public class Prescription {
     private UUID uuid;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "prontuario_uuid", nullable = false)
     private Prontuario prontuario;
 

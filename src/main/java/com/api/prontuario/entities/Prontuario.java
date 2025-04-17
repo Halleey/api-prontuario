@@ -1,4 +1,5 @@
 package com.api.prontuario.entities;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Prontuario {
     private String treatment;
     private String observations;
     @OneToMany(mappedBy = "prontuario", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Prescription> prescriptions = new ArrayList<>();
 
     public List<Prescription> getPrescriptions() {
