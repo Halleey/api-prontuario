@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface ProntuarioRepository extends JpaRepository<Prontuario, UUID> {
     List<Prontuario> findByPatientCpf(String patientCpf);
+
+
 }

@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface ProntuarioService {
 
-    public void saveProntuario(String token, ProntuarioRequestDTO prontuarioRequestDTO);
-
-
+    void saveProntuario(String token, ProntuarioRequestDTO prontuarioRequestDTO);
 
     List<Prontuario> getProntuario(String patientCpf);
 }

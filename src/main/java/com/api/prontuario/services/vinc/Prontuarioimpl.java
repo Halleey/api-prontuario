@@ -5,6 +5,7 @@ import com.api.prontuario.dtos.PrescriptionRequestDTO;
 import com.api.prontuario.dtos.ProntuarioRequestDTO;
 import com.api.prontuario.entities.Prescription;
 import com.api.prontuario.entities.Prontuario;
+import com.api.prontuario.repositories.PatientRepository;
 import com.api.prontuario.repositories.ProntuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +17,21 @@ import java.util.Optional;
 public class Prontuarioimpl implements  ProntuarioService {
     private final ProntuarioRepository prontuarioRepository;
     private final JwtUtil jwtUtil;
+    private final PatientRepository repository;
 
-    public Prontuarioimpl(ProntuarioRepository prontuarioRepository, JwtUtil jwtUtil) {
+    public Prontuarioimpl(ProntuarioRepository prontuarioRepository, JwtUtil jwtUtil, PatientRepository repository) {
         this.prontuarioRepository = prontuarioRepository;
         this.jwtUtil = jwtUtil;
+        this.repository = repository;
     }
 
     @Override
     public void saveProntuario(String token, ProntuarioRequestDTO prontuarioRequestDTO) {
         String doctorCrm = jwtUtil.getClaims(token).get("crm", String.class);
+
+        if(!repository.existsByCpf(prontuarioRequestDTO.patientCpf()))  {
+            throw new RuntimeException("paciente com cpf "  + prontuarioRequestDTO.patientCpf() +  " não existe");
+        }
 
         Prontuario prontuario = new Prontuario();
         prontuario.setDoctorCrm(doctorCrm);
