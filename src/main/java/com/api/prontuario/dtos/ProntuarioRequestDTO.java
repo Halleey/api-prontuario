@@ -6,8 +6,6 @@ import java.util.List;
 public class ProntuarioRequestDTO {
     private String doctorCrm;
     private String patientCpf;
-
-    private LocalDateTime consultationDate;
     private String diagnosis;
     private String treatment;
     private String observations;
@@ -36,15 +34,6 @@ public class ProntuarioRequestDTO {
     public void setPatientCpf(String patientCpf) {
         this.patientCpf = patientCpf;
     }
-
-    public LocalDateTime consultationDate() {
-        return consultationDate;
-    }
-
-    public void setConsultationDate(LocalDateTime consultationDate) {
-        this.consultationDate = consultationDate;
-    }
-
     public String diagnosis() {
         return diagnosis;
     }

@@ -27,7 +27,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/api/prontuarios").hasAuthority("ROLE_DOCTOR")
-                                .requestMatchers(HttpMethod.GET, "/api/prontuarios").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/screening").hasAuthority("ROLE_NURSE")
+                                .requestMatchers(HttpMethod.GET, "/api/prontuarios").hasAnyAuthority("ROLE_DOCTOR", "ROLE_NURSE")
                                 .requestMatchers("/api/teste").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session ->

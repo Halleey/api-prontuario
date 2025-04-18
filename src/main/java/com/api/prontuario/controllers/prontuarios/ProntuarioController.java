@@ -1,4 +1,4 @@
-package com.api.prontuario.controllers;
+package com.api.prontuario.controllers.prontuarios;
 
 import com.api.prontuario.dtos.ProntuarioRequestDTO;
 import com.api.prontuario.entities.Prontuario;

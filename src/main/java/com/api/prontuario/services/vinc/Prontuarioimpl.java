@@ -10,6 +10,8 @@ import com.api.prontuario.repositories.ProntuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +38,7 @@ public class Prontuarioimpl implements  ProntuarioService {
         Prontuario prontuario = new Prontuario();
         prontuario.setDoctorCrm(doctorCrm);
         prontuario.setPatientCpf(prontuarioRequestDTO.patientCpf());
-        prontuario.setConsultationDate(LocalDateTime.now());
+        prontuario.setConsultationDate(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
         prontuario.setDiagnosis(prontuarioRequestDTO.diagnosis() );
         prontuario.setTreatment(prontuarioRequestDTO.treatment());
         prontuario.setObservations(prontuarioRequestDTO.observations());
