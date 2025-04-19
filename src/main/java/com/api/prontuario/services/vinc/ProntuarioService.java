@@ -10,6 +10,7 @@ public interface ProntuarioService {
     void saveProntuario(String token, ProntuarioRequestDTO prontuarioRequestDTO);
 
     List<Prontuario> getProntuario(String patientCpf);
+
 }
 
 

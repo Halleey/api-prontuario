@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/api/prontuarios").hasAuthority("ROLE_DOCTOR")
                                 .requestMatchers(HttpMethod.POST, "/api/screening").hasAuthority("ROLE_NURSE")
+                                .requestMatchers(HttpMethod.GET, "/api/screening").hasAnyAuthority("ROLE_DOCTOR", "ROLE_NURSE")
                                 .requestMatchers(HttpMethod.GET, "/api/prontuarios").hasAnyAuthority("ROLE_DOCTOR", "ROLE_NURSE")
                                 .requestMatchers("/api/teste").permitAll()
                                 .anyRequest().authenticated())
